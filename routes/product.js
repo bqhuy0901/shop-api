@@ -1,12 +1,11 @@
 const router = require('express').Router()
-const { query } = require('express')
 const Product = require('../model/Product')
-const { verifyTokenAndAdmin } = require('./verifyToken')
+const { verifyTokenAndAdmin, verifyToken, verifyTokenAndAuth } = require('./verifyToken')
 
 //Create Protuct (tao san pham )
-
 router.post('/', verifyTokenAndAdmin, async (req, res) => {
   const newProduct = new Product(req.body)
+
   try {
     const savedProduct = await newProduct.save()
     res.status(200).json(savedProduct)
@@ -15,7 +14,7 @@ router.post('/', verifyTokenAndAdmin, async (req, res) => {
   }
 })
 
-//Update (Cap nhat tai khoan)
+//Update (Cap nhat San pham)
 router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -57,8 +56,9 @@ router.get('/', async (req, res) => {
   const qCategory = req.query.category
   try {
     let products
+
     if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(5)
+      products = await Product.find().sort({ createdAt: -1 }).limit(1)
     } else if (qCategory) {
       products = await Product.find({
         categories: {

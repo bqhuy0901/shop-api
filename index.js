@@ -14,20 +14,20 @@ const port = 5000
 dotenv.config()
 
 mongoose
-  .connect('mongodb+srv://huy:090100@shop-api.edqe4.mongodb.net/shop-api?retryWrites=true&w=majority')
+  .connect(process.env.MONGO_URL)
   .then(() => console.log('DB Connnect Successfull!'))
   .catch(err => {
     console.log(err)
   })
 
-app.use(express.json())
 app.use(cors())
+app.use(express.json())
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/products', productRoute)
 app.use('/api/carts', cartRoute)
 app.use('/api/orders', orderRoute)
-app.use('/api/checkout', orderRoute)
+app.use('/api/checkout', stripeRoute)
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Example app listening on port ${port}`)

@@ -1,5 +1,4 @@
 const router = require('express').Router()
-const { query } = require('express')
 const User = require('../model/User')
 const { verifyTokenAndAuth, verifyTokenAndAdmin } = require('./verifyToken')
 
